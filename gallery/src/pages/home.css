@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+  
+  :root{
+  
+    --primary: #ff3700;
+  
+  }
+  
+  body{
+    background: #000000;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  body::-webkit-scrollbar{
+    display: none;
+  }
+  
+  .card{
+    width: fit-content;
+    height: fit-content;
+    margin: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: rgba(240, 240, 255, 0.133);
+  }
+  
+  img{ 
+    padding: 0.5 rem;
+    border-radius: 15px;
+  }
