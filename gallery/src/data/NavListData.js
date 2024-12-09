@@ -9,19 +9,19 @@ const NavListData = [
     {
         _id: 2,
         link: "#Scheduel",
-        name: `scheduel`,
+        name: `whats on tonight`,
         active: false,
     },
     {
         _id: 3,
         link: "#Trend",
-        name: `Trend`,
+        name: `My Favourite`,
         active: false,
     },
     {
         _id: 4,
         link: "#blog",
-        name: `blogs`,
+        name: `Rankings`,
         active: false,
     }
 ];

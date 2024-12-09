@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import axios from "axios";
-import { useNavigate, Link } from 'react-router-dom';
 
 
 
@@ -110,9 +109,7 @@ const loginFormStyle = {
     
 }
 
-function LoginForm() {
-    //this is used to navigate through different pages. 
-    const history = useNavigate();
+function SignUpForm() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -126,10 +123,11 @@ function LoginForm() {
             })
             .then(res=>{
                 if(res.data==="exists"){
-                    history('/home',)
+                    alert("User already exists!")
                 }
                 else if(res.data==="notexists"){
-                    alert("User not found!")
+                    alert("User created successfully!")
+                    window.location.href = "/login" // Redirect to login page after successful registration
                 }   
             })
             .catch(e => {
@@ -144,7 +142,7 @@ function LoginForm() {
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
         <form action= "POST">
-            <h1 style={loginFormStyle.wrapperH1}>Login</h1>
+            <h1 style={loginFormStyle.wrapperH1}>Registration</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
                 <input style={loginFormStyle.wrapperInput} type = "email" onChange={(e)=>{setEmail(e)}} placeHolder="Username" required/>
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
@@ -158,15 +156,13 @@ function LoginForm() {
                 <a style={loginFormStyle.forgotPassword} href="#">Forgot Password?</a>
             </div>
 
-            <button style={loginFormStyle.LoginButton} type="submit" onClick={submit}>Login</button>
+            <button style={loginFormStyle.LoginButton} type="submit" onClick={submit}>Register</button>
             <div style={loginFormStyle.registerText} className="register-link">
-                <p style={loginFormStyle.smallText}>Already have an account?<a style={loginFormStyle.registerLink} href="/#Signup">Register</a></p>
+                <p style={loginFormStyle.smallText}>Don't have an account?<a style={loginFormStyle.registerLink} href="/">Login</a></p>
             </div>
         </form>
     </div>
   )
 }
 
-
-
-export default LoginForm
+export default SignUpForm
