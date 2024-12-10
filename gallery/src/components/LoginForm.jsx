@@ -34,7 +34,7 @@ const loginFormStyle = {
         color: "ffffff",
         border: "2px white solid",
         boxShadow: "0 0 10px rgba(255, 255, 255, .2)",
-        backdropFilter: "blur(30px)",
+        backdropFilter: "blur(5px)",
         borderRadius: "20px",
         padding: "30px 40px"
         
