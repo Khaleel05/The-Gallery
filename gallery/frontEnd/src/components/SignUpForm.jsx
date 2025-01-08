@@ -144,11 +144,11 @@ function SignUpForm() {
         <form action= "POST">
             <h1 style={loginFormStyle.wrapperH1}>Registration</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "email" onChange={(e)=>{setEmail(e)}} placeHolder="Username" required/>
+                <input style={loginFormStyle.wrapperInput} type = "email" onChange={(e)=>{setEmail(e)}} placeholder="Username" required/>
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "password" onChange={(e)=>{setPassword(e)}} placeHolder="Password" required/>
+                <input style={loginFormStyle.wrapperInput} type = "password" onChange={(e)=>{setPassword(e)}} placeholder="Password" required/>
                 <RiLockPasswordFill style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div style={loginFormStyle.rememberMe} className = "remember-forgot">
@@ -158,7 +158,7 @@ function SignUpForm() {
 
             <button style={loginFormStyle.LoginButton} type="submit" onClick={submit}>Register</button>
             <div style={loginFormStyle.registerText} className="register-link">
-                <p style={loginFormStyle.smallText}>Don't have an account?<a style={loginFormStyle.registerLink} href="/">Login</a></p>
+                <p style={loginFormStyle.smallText}>Already have an Account?<a style={loginFormStyle.registerLink} href="/">Login</a></p>
             </div>
         </form>
     </div>

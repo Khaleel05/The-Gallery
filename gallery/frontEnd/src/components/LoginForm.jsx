@@ -114,43 +114,73 @@ function LoginForm() {
     //this is used to navigate through different pages. 
     const history = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
-    async function submit(e){
+    
+    async function handleSubmit(e){
         e.preventDefault();
         
         try{
-            await axios.post("http://localhost:3000/",{
+            //Sends POST request with email and password
+            const response = await axios.post("http://localhost:8081/user",{
                 email, password
-            })
-            .then(res=>{
-                if(res.data==="exists"){
-                    history('/home',)
-                }
-                else if(res.data==="notexists"){
-                    alert("User not found!")
-                }   
-            })
-            .catch(e => {
-                alert("Wrong Details")
-            })
+            });
+
+            //handle response data
+            console.log(response.data)
+            if(response.data==="exists"){
+                console.log('login successfull');
+                history('/home',)
+            }
+            else if(response.data==="notexists"){
+                alert("User not found!")
+            }
+            else{
+                //Handle unepected response
+                console.error("unexpecte: ", response.data);
+                alert("An unexpected error occurred!")
+            }   
         }
         catch{
             console.log(e)
+            alert("wrong details")
         }
     }
+    
+
+    /*
+
+    function handleSubmit(event){
+        event.preventDefault();
+        console.log(52);
+        console.log({email, password});
+        axios.post('http://localhost:8081/user',{email, password})
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+    }
+    */    
 
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
-        <form action= "POST">
+        <form onSubmit ={handleSubmit}>
             <h1 style={loginFormStyle.wrapperH1}>Login</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "email" onChange={(e)=>{setEmail(e)}} placeHolder="Username" required/>
+                <input 
+                    style={loginFormStyle.wrapperInput} 
+                    type = "email" 
+                    onChange={(e)=>{setEmail(e.target.value)}} 
+                    placeholder="Username" required
+                />
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "password" onChange={(e)=>{setPassword(e)}} placeHolder="Password" required/>
+                <input 
+                    style={loginFormStyle.wrapperInput} 
+                    type = "password" 
+                    onChange={(e)=>{setPassword(e.target.value)}} 
+                    placeholder="Password" required
+                />
                 <RiLockPasswordFill style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div style={loginFormStyle.rememberMe} className = "remember-forgot">
@@ -158,9 +188,9 @@ function LoginForm() {
                 <a style={loginFormStyle.forgotPassword} href="#">Forgot Password?</a>
             </div>
 
-            <button style={loginFormStyle.LoginButton} type="submit" onClick={submit}>Login</button>
+            <button style={loginFormStyle.LoginButton} type="submit" >Login</button>
             <div style={loginFormStyle.registerText} className="register-link">
-                <p style={loginFormStyle.smallText}>Already have an account?<a style={loginFormStyle.registerLink} href="/#Signup">Register</a></p>
+                <p style={loginFormStyle.smallText}>Dont have an Account?<a style={loginFormStyle.registerLink} href="/#Signup">Register</a></p>
             </div>
         </form>
     </div>
