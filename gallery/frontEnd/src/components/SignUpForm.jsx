@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import axios from "axios";
+import './signupForm.css';
 
 
 
@@ -109,16 +110,47 @@ const loginFormStyle = {
     
 }
 
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.[0-9])(?=.*[!@#$%]).{7, 30}$/; //This is the requirment for the password. 
+
 function SignUpForm() {
 
+    const userRef = useRef(); //sets the focus on the user input when the form loads.
+    const errRef = useRef(); //if we get an error we put the focus on the error message.
+
     const [email, setEmail] = useState('');
+    const [userFocus, setUserFocus] = useState(false); //checks if the user is focused
+    
+
     const [password, setPassword] = useState('');
+    const [validPwd, setValidPwd] = useState(false); //checks if the password is valid
+    const [pwdFocus, setPwdFocus] = useState(false); //checks if the password input is focused
+    
+    const [matchPwd, setMatchPwd] = useState(''); //checks the second Entry matches the first
+    const [validMatch, setValidMatch] = useState(false); //checks
+    const [matchFocus, setMatchFocus] = useState(false); //checks if the second password input is focused
+
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState('false');
+
+    useEffect (() => {
+        const result = PWD_REGEX.test(password);
+        console.log(result)
+        console.log(password);
+        setValidPwd(result);
+        const match = password === matchPwd;
+        setValidMatch(match);
+    },[password, matchPwd])
+
+    useEffect (() => {
+        setErrMsg('');
+    },[email, password, matchPwd])
+
 
     async function submit(e){
         e.preventDefault();
         
         try{
-            await axios.post("http://localhost:3000/",{
+            await axios.post("http://localhost:3000/user",{
                 email, password
             })
             .then(res=>{
@@ -132,6 +164,7 @@ function SignUpForm() {
             })
             .catch(e => {
                 alert("Wrong Details")
+                console.error("unexpecte: ", e);
             })
         }
         catch{
@@ -139,18 +172,61 @@ function SignUpForm() {
         }
     }
 
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        //if button is hacked in js
+        const v2 = PWD_REGEX.test(password);
+
+        if(!v2){
+            setErrMsg("Invalid password");
+            return
+        }
+    }
+
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
-        <form action= "POST">
+        <form onSubmit= {handleSubmit}>
             <h1 style={loginFormStyle.wrapperH1}>Registration</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "email" onChange={(e)=>{setEmail(e)}} placeholder="Username" required/>
+            <label htmlFor='userName' style={{color: 'White'}}>Username:</label>
+                <input 
+                style={loginFormStyle.wrapperInput} 
+                type = "email" 
+                onChange={(e)=>{setEmail(e)}} 
+                placeholder="Username" 
+                required/>
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
-                <input style={loginFormStyle.wrapperInput} type = "password" onChange={(e)=>{setPassword(e)}} placeholder="Password" required/>
+            <label htmlFor='password' style={{color: 'White'}}>
+                Password:
+                <span className={validPwd ? "valid": "hide"} ></span>
+                <span className={validPwd || password ? "hide": "valid"}></span>
+            </label>
+                <input 
+                    style={loginFormStyle.wrapperInput} 
+                    type = "password" 
+                    onChange={(e)=>{setPassword(e.target.value)}} 
+                    placeholder="Password" 
+                    required
+                    aria-invalid={validPwd ? "false" : "true"}
+                    aria-describedby="pwdnote"
+                    onFocus={() => setPwdFocus(true)}
+                    onBlur={() => setPwdFocus(false)}
+                />
                 <RiLockPasswordFill style={loginFormStyle.inputBoxIcon} className="icon"/>
+                {/*
+                <p id = "pwnote" className = {pwdFocus && !validPwd ? "instructions": "offScreen"}>
+                    Password must be at least 7 characters long, contain at least one uppercase letter, 
+                    one lowercase letter, 
+                    one number, 
+                    and one special character.
+                </p>
+                */}
             </div>
+            <section>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offScreen"} aria-live="assertve">{errMsg}</p>
+            </section>
             <div style={loginFormStyle.rememberMe} className = "remember-forgot">
                 <label style={loginFormStyle.smallText}><input type="checkbox"/>Remember Me</label>
                 <a style={loginFormStyle.forgotPassword} href="#">Forgot Password?</a>

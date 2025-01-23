@@ -3,6 +3,7 @@ import NavListItem from '../components/NavListItem'
 import NavListData from '../data/NavListData';
 import './header.css'
 import SearchBar from '../components/SearchBar'
+import UserSettings from '../components/UserSettings';
 
 function Header() {
   return (
@@ -17,6 +18,7 @@ function Header() {
                 ))}
             </ul>
                 <SearchBar/>
+                <UserSettings/>
         </header>
       
     </div>

@@ -39,9 +39,12 @@ function Login() {
         bodyStyle.alignItems = 'center';
         bodyStyle.minHeight = '100vh';
 
+        
         return () => {
-            document.body.style.backgroundColor = 'white';
+            //document.body.style.backgroundColor = 'white';
+            document.body.style.background ='black';
         };
+        
     }, []);
 
     return(

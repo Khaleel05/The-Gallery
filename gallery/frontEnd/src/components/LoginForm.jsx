@@ -75,6 +75,7 @@ const loginFormStyle = {
         justifyContent: "space-between",
         fontSize: "0.8em",
         margin: "-1em 0 1em",
+        padding: "1em",
     },
     forgotPassword: {
         color: "white",
@@ -149,36 +150,28 @@ function LoginForm() {
     }
     
 
-    /*
-
-    function handleSubmit(event){
-        event.preventDefault();
-        console.log(52);
-        console.log({email, password});
-        axios.post('http://localhost:8081/user',{email, password})
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-    }
-    */    
-
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
         <form onSubmit ={handleSubmit}>
             <h1 style={loginFormStyle.wrapperH1}>Login</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
+                <label htmlFor='userName' style={{color: 'White'}}>Username:</label>
                 <input 
                     style={loginFormStyle.wrapperInput} 
                     type = "email" 
                     onChange={(e)=>{setEmail(e.target.value)}} 
+                    autoComplete = "false"
                     placeholder="Username" required
                 />
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
+                <label htmlFor='password' style={{color: 'white'}}>Password:</label>  {/* Add a label for password */}  {/* Add password strength meter */}   {/* Add password visibility toggle */}   {/* Add password rules */}   {/* Add password reset functionality */}   {/* Add password recovery functionality */}   {/* Add password recovery email */}   {/* Add password recovery link */}   {/* Add password recovery link functionality */}   {/* Add password recovery link expiration */}   {/* Add password recovery link expiration functionality */}
                 <input 
                     style={loginFormStyle.wrapperInput} 
                     type = "password" 
                     onChange={(e)=>{setPassword(e.target.value)}} 
+                    autoComplete = "false" 
                     placeholder="Password" required
                 />
                 <RiLockPasswordFill style={loginFormStyle.inputBoxIcon} className="icon"/>

@@ -1,0 +1,25 @@
+.carousel{
+    width: 98%;
+    margin:1.2rem;
+    display: inline-block;
+    border: green 2px solid;
+    grid-auto-flow: column;
+    overflow-x: scroll !important;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    white-space: nowrap;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+}
+
+.carousel ion-icon{
+    color: 'white'; 
+    height:'70px';
+    width:'70px'; 
+    position: 'absolute'; 
+    left: '2%'; 
+    top: '20%';
+}

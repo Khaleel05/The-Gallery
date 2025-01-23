@@ -19,6 +19,14 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.get('/user', (req, res) => {
+    const sql = "SELECT * FROM user";
+    db.query(sql, (err, data) => {
+        if(err) return res.json(err);
+        return res.json(data);
+    })
+});
+
 //cheking login details match with database details. 
 app.post('/user', (req, res) => {
     const sql = "SELECT * FROM user WHERE Email = ? AND Password = ?";
