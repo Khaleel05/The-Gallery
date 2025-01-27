@@ -1,0 +1,17 @@
+.MovieCards .movie-image {
+    width: 140px;
+    height: 200px;
+    margin: 0.5rem;
+    transition: transform 0.3s ease, margin 0.3s ease;
+}
+
+.MovieCards .movie-image:hover {
+    transform: scale(1.3); /* Adjust scale value to desired zoom level */
+    margin-left: 1.4rem; /*Adjust the margin between the hovered image and the image in the left.*/
+    margin-right: 1.4rem; /* adjust the magin beteen the hovered image the the image on the right */
+    cursor: pointer;
+}
+
+.MovieCards .movie-image:hover ~ .movie-image {
+    
+}

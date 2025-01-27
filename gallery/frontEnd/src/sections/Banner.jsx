@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import './banner.css'
+import Style from './banner.module.css'
 
 function Banner() {
   return (
-    <div>
+    <div className={Style.banner}>
       
     </div>
   )

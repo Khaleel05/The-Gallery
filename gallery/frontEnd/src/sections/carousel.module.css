@@ -15,11 +15,21 @@
     }
 }
 
-.carousel ion-icon{
+
+.icon{
     color: 'white'; 
     height:'70px';
-    width:'70px'; 
-    position: 'absolute'; 
-    left: '2%'; 
-    top: '20%';
+    width:'70px';
+    position:absolute;
+    top: 50%;
+    transform: translateY(-50); 
 }
+
+.leftIcon{
+    left: 2%; 
+}
+  
+.rightIcon {
+    right: 2%; 
+}
+

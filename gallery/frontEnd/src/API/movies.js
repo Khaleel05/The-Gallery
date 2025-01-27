@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
+import './movies.css';
 
 //retrieving movie data fromt the TMDB API
 function Movies() {
@@ -15,6 +16,8 @@ function Movies() {
     //create a list that is will be filled with the mocie object from the api. 
     const [movieList, setMovieList] = useState([])
 
+
+
     const getmovie =() => {
         fetch(`https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253`)
            .then(res => res.json())
@@ -26,13 +29,20 @@ function Movies() {
         getmovie()
     },[])
 
+    
+
     //display what movies have been retrieved. 
     console.log(movieList)
 
   return (
     <div className ='MovieCards'  style={{color: 'white'}}>
       {movieList.map((movie)=>(
-        <img style={{width:'140px',height:'200px', margin:'0.5rem'}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+        <img
+            key={movie.id}
+            className="movie-image"
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+            alt={movie.title}
+        />
       ))}
     </div>
   )
