@@ -1,7 +1,10 @@
 .carousel{
     width: 98%;
-    margin:1.2rem;
+    margin-bottom:1.2rem;
+    margin-left:1.2rem;
+    margin-right:1.2rem;
     display: inline-block;
+    padding: 1.5em;
     border: green 2px solid;
     grid-auto-flow: column;
     overflow-x: scroll !important;
