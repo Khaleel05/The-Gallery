@@ -26,7 +26,7 @@ const Carousel = () => {
       <div style={{boarder: 'solid 1px blue'}}>
           <div  className={Style.carousel} ref={carouselRef}>
               <ion-icon style={{color: 'white', height:'70px', width:'70px', position: 'absolute', left: '2%', cursor:'pointer'}} name="arrow-back-circle-outline" onClick={scrollLeft}></ion-icon>
-              <ion-icon style={{color: 'white', height:'70px', width:'70px', position: 'absolute', right: '2%', cursor:'pointer'}}  name="arrow-forward-circle-outline" onClick={scrollRight}>></ion-icon>
+              <ion-icon style={{color: 'white', height:'70px', width:'70px', position: 'absolute', right: '2%', cursor:'pointer'}}  name="arrow-forward-circle-outline" onClick={scrollRight}></ion-icon>
           <Movies/>
           </div>
       </div>
