@@ -1,8 +1,68 @@
-const express = require('express');
-const mysql =  require('mysql');
-const cors = require('cors');
-const path = require('path') //take this out later. 
+const app = require('./app');
+const db = require('./config/db');
 
+const PORT = 8081;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
+
+
+
+
+/*
+// Database connection
+db.connect((err) => {
+    if (err) throw err;
+    console.log('MySQL Connected...');
+});
+*/
+
+
+
+
+//const express = require('express');
+//const mysql =  require('mysql');
+//const cors = require('cors');
+//const path = require('path'); //take this out later.
+//const userRouter = require('/paths/userRoutes'); 
+
+
+
+/*
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+// Database connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'gallery'
+});
+db.connect(err => {
+    if (err) throw err;
+    console.log('MySQL Connected...');
+});
+
+// Use routes
+app.use('/user', userRouter);
+
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
+app.listen(8081, () => console.log('Server is running on port 8081'));
+*/
+
+
+
+
+
+/*
 const app = express();
 
 app.use(express.json());
@@ -51,4 +111,5 @@ db.connect((err) => {
     if (err) throw err;
     console.log('MySQL Connected...');
 });
+*/
 
