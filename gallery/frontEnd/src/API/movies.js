@@ -3,6 +3,50 @@ import { useState } from 'react'
 import './movies.css';
 import { useNavigate } from 'react-router-dom';
 
+
+
+function Movies() {
+  const navigate = useNavigate();
+  const [movieList, setMovieList] = useState([]);
+
+  // Fetch movies from your backend
+  const getMovies = () => {
+    fetch('http://localhost:8081/api/movies') // Call your backend route
+      .then((res) => res.json())
+      .then((data) => setMovieList(data))
+      .catch((error) => console.error('Error:', error));
+  };
+
+  useEffect(() => {
+    getMovies();
+  }, []);
+
+  // Handle click on a movie card
+  const handleClick = (id) => {
+    navigate(`/details/${id}`);
+    console.log(id);
+  };
+
+  return (
+    <div className="MovieCards" style={{ color: 'white' }}>
+      {movieList.map((movie) => (
+        <img
+          key={movie.id}
+          className="movie-image"
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+          onClick={() => handleClick(movie.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
+
+
+
+
+/*
 //retrieving movie data fromt the TMDB API
 function Movies() {
   const navigate = useNavigate();
@@ -36,11 +80,11 @@ function Movies() {
   },[])
 
 
-  /*
-  const handleClick = (movie) => {
-    setSelectedMovie(movie)
-  }
-    */
+  
+  //const handleClick = (movie) => {
+    //setSelectedMovie(movie)
+  //}
+  
 
   //this function will handle the click event on a movie card
   const handleClick = (id) => {
@@ -65,5 +109,6 @@ function Movies() {
     </div>
   )
 }
+*/
 
 export default Movies

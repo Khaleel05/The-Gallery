@@ -3,6 +3,46 @@ import { useState } from 'react'
 import './backdrop.css';
 import { useNavigate } from 'react-router-dom';
 
+
+function Backdrop() {
+  const navigate = useNavigate();
+  const [movieList, setMovieList] = useState([]);
+
+  // Fetch movies from your backend
+  const getMovies = () => {
+    fetch('http://localhost:8081/api/movies') // Call your backend route
+      .then((res) => res.json())
+      .then((data) => setMovieList(data))
+      .catch((error) => console.error('Error:', error));
+  };
+
+  useEffect(() => {
+    getMovies();
+  }, []);
+
+  // Handle click on a movie backdrop
+  const handleClick = (id) => {
+    navigate(`/details/${id}`);
+  };
+
+  return (
+    <div className="backdropCards" style={{ color: 'white' }}>
+      {movieList.map((movie) => (
+        <img
+          key={movie.id}
+          className="movie-backdrop"
+          src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+          alt={movie.title}
+          onClick={() => handleClick(movie.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
+
+
+/*
 //retrieving movie data fromt the TMDB API
 function Backdrop() {
   const navigate = useNavigate();
@@ -53,5 +93,6 @@ function Backdrop() {
     </div>
   )
 }
+*/
 
 export default Backdrop

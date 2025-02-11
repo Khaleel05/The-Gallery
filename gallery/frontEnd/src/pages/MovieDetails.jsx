@@ -1,8 +1,102 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from '../sections/Header'
+import Style from './movieDetails.module.css'
+import RecMovies from '../API/recMovies'
 
 
+
+function MovieDetails() {
+    const { id } = useParams();
+  
+    // State to hold movie data
+    const [movie, setMovie] = useState(null);
+    const [streamingService, setStreamingServices] = useState(null);
+    const [trailer, setTrailer] = useState(null);
+  
+    // Fetch movie details from your backend
+    const getMovieDetails = () => {
+      fetch(`http://localhost:8081/api/movies/${id}`) // Call your backend route
+        .then((response) => response.json())
+        .then((data) => setMovie(data))
+        .catch((error) => console.error('Error:', error));
+    };
+  
+    // Fetch trailers from your backend
+    const getTrailer = () => {
+      fetch(`http://localhost:8081/api/movies/${id}/videos`) // Call your backend route
+        .then((res) => res.json())
+        .then((data) => {
+          // Filter the results array to only include objects with the type "Trailer"
+          const trailerResults = data.results.find((item) => item.type === 'Trailer');
+          // Set the filtered results to the state
+          setTrailer(trailerResults);
+        })
+        .catch((error) => console.error('Error:', error));
+    };
+  
+    // Fetch streaming services from your backend
+    const getStreamingService = () => {
+      fetch(`http://localhost:8081/api/movies/${id}/watch/providers`) // Call your backend route
+        .then((res) => res.json())
+        .then((data) => setStreamingServices(data))
+        .catch((error) => console.error('Error:', error));
+    };
+  
+    // Fetch movie details, trailers, and streaming services when the id changes
+    useEffect(() => {
+      getMovieDetails();
+      getStreamingService();
+      getTrailer();
+    }, [id]);
+  
+    // If movie data is not loaded yet, display a loading message
+    if (!movie) return <p>Loading movie details...</p>;
+  
+    // Render movie details
+    return (
+      <div style={{ position: 'absolute', top: '5rem' }}>
+        <Header />
+        <div style={{ color: 'white' }}>
+            <div className='DTitle' style={{ bottomBoarder:'solid 1px white'}}>
+                <h1>{movie.title}</h1>
+            </div>
+            <div style={{border:'solid 1px red', width:'100%', height: 'auto', display: 'inline-flex', justifyContent:'space-evenly'}}>
+                <div className={Style.DImage} /*style={{float:'left', padding:'1rem', margin:'1rem', border:'solid 1px red', display:'inline-block'}}*/>
+                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} style={{width: '90%'}} />
+                </div>
+                <div className="video-container" style={{border:'solid 1px red',margin:'1rem', display:'inline-block', alignItems: 'center', justifyContent: 'center'}}>
+                    {trailer && (
+                    <iframe
+                        width="560"
+                        height="315"
+                        src={`https://www.youtube.com/embed/${trailer.key}?si=zqeSvBhlLTXsMnyC&autoplay=1&mute=1`}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                    ></iframe>
+                    )}
+                </div>
+                <div style={{border:'solid 1px blue', width:'30%', padding:'1rem', margin: '1rem', justifyContent:'center', alignItems:'center'}}>
+                    <p>Release Date: {movie.release_date}</p>
+                    <p>Overview: {movie.overview}</p>
+                </div>
+            </div>
+            <div>
+                <h2 style={{borderBottom:'solid 1px white'}}>Suggested</h2>
+                <div>
+                    <RecMovies/>
+                </div>
+            </div>
+        </div>
+      </div>
+    );
+  }
+
+
+/*
 function MovieDetails(){
 
     //const process = require('process');
@@ -91,6 +185,7 @@ function MovieDetails(){
         </div>
     )
 }
+*/
 
 export default MovieDetails;
 
