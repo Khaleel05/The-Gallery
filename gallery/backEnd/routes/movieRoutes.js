@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const apiKey = process.env.TMDB_API_KEY
+const apiKey = process.env.REACT_TMDB_API_KEY
 
 //Route to fetch movies from the TMDB API
 router.get('/movies', async (req, res) => {

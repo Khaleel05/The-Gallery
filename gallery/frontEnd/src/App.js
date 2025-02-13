@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import MovieDetails from './pages/MovieDetails';
 
+console.log(process.env.REACT_APP_TMDB_API_KEY);
+
 function App() {
   return (
     <div className="App">

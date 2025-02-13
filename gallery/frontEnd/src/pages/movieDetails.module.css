@@ -13,3 +13,10 @@
 
 .DImage.img{
 }
+
+.moviegrid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}

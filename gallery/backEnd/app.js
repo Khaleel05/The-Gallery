@@ -4,6 +4,8 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const movieRoutes = require('./routes/movieRoutes'); // Import the new movie route
 
+console.log(process.env.REACT_APP_TMDB_API_KEY);
+
 const app = express();
 
 app.use(express.json());
