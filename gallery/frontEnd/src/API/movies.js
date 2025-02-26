@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function Movies() {
+function Movies({Gkey}) {
   const navigate = useNavigate();
   const [movieList, setMovieList] = useState([]);
 

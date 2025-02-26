@@ -42,6 +42,9 @@ function Home() {
         ) : (
           <>
             <Banner />
+            {GenreApiList.map((genre) => (
+              <Carousel key={genre.id} genre={genre.name}/>
+            ))}
             <Carousel />
             <Carousel />
           </>

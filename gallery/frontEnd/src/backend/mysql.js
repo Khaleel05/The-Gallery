@@ -15,3 +15,5 @@ const db = mysql.createConnection({
 })
 
 //schema for the users of the app
+
+//THIS FILE IS NOT IN USE. 

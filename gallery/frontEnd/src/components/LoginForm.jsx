@@ -139,7 +139,7 @@ function LoginForm() {
             }
             else{
                 //Handle unepected response
-                console.error("unexpecte: ", response.data);
+                console.error("unexpected: ", response.data);
                 alert("An unexpected error occurred!")
             }   
         }

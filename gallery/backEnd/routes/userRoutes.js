@@ -9,4 +9,7 @@ router.get('/', userController.getAllUsers);
 // Check login details
 router.post('/', userController.checkLogin);
 
+// Register a new user
+router.post('/register', userController.registerUser);
+
 module.exports = router;

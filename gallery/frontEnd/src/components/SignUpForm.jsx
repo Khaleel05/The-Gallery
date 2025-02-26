@@ -110,7 +110,8 @@ const loginFormStyle = {
     
 }
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.[0-9])(?=.*[!@#$%]).{7, 30}$/; //This is the requirment for the password. 
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{7,30}$/;
+
 
 function SignUpForm() {
 
@@ -146,54 +147,52 @@ function SignUpForm() {
     },[email, password, matchPwd])
 
 
-    async function submit(e){
+    const submit = async (e) => {
         e.preventDefault();
-        
-        try{
-            await axios.post("http://localhost:3000/user",{
-                email, password
-            })
-            .then(res=>{
-                if(res.data==="exists"){
-                    alert("User already exists!")
-                }
-                else if(res.data==="notexists"){
-                    alert("User created successfully!")
-                    window.location.href = "/login" // Redirect to login page after successful registration
-                }   
-            })
-            .catch(e => {
-                alert("Wrong Details")
-                console.error("unexpecte: ", e);
-            })
+    
+        if (!email || !password) {
+            setErrMsg("All fields are required!");
+            return;
         }
-        catch{
-            console.log(e)
+    
+        if (!PWD_REGEX.test(password)) {
+            setErrMsg("Invalid password format!");
+            return;
         }
-    }
-
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        //if button is hacked in js
-        const v2 = PWD_REGEX.test(password);
-
-        if(!v2){
-            setErrMsg("Invalid password");
-            return
+    
+        try {
+            const res = await axios.post("http://localhost:8081/user/register", {
+                email: email.trim(),
+                password: password.trim()
+            });
+    
+            if (res.data === "exists") {
+                setErrMsg("User already exists!");
+            } else if (res.data === "notexists") {
+                alert("User created successfully!");
+                window.location.href = "/login";
+            } else {
+                setErrMsg("Registration failed. Try again.");
+            }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            setErrMsg("Something went wrong. Please try again.");
         }
-    }
+    };
 
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
-        <form onSubmit= {handleSubmit}>
+        <form onSubmit= {submit}>
             <h1 style={loginFormStyle.wrapperH1}>Registration</h1>
             <div className="input-box" style={loginFormStyle.wrapperInputBox}>
             <label htmlFor='userName' style={{color: 'White'}}>Username:</label>
                 <input 
                 style={loginFormStyle.wrapperInput} 
-                type = "email" 
-                onChange={(e)=>{setEmail(e)}} 
-                placeholder="Username" 
+                type = "email"
+                id="email"
+                value={email}
+                onChange={(e)=>{setEmail(e.target.value)}} 
+                placeholder="Email" 
                 required/>
                 <FaUser style={loginFormStyle.inputBoxIcon} className="icon"/>
             </div>

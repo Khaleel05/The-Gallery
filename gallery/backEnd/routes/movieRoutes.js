@@ -5,10 +5,15 @@ const axios = require('axios');
 
 const apiKey = process.env.REACT_TMDB_API_KEY
 
+
+router.get('/api/movie', (req, res) => {
+  res.json(movies);
+});
+
 //Route to fetch movies from the TMDB API
 router.get('/movies', async (req, res) => {
     try {
-        const url = `https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253`;
+        const url = `https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&with_genres=`;
         const response = await axios.get(url);
         res.json(response.data.results); // Send the movie data back to the frontend
     } catch (error) {
