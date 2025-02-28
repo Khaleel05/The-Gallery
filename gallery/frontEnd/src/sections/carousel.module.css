@@ -1,24 +1,158 @@
-.carousel{
-    width: 98%;
-    margin-bottom:1.2rem;
-    margin-left:1.2rem;
-    margin-right:1.2rem;
-    display: inline-block;
-    padding: 1.5em;
-    border: green 2px solid;
-    grid-auto-flow: column;
-    overflow-x: scroll !important;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px;
+    position: relative;
+    scrollbar-width: none; /* For Firefox */
+    gap: 12px; /* Reduced gap between cards */
+    width: 100%;
+  }
+  
+  .carousel::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  
+  .movieCard {
+    /* Reduced card width - more cards per row */
+    flex: 0 0 auto;
+    width: calc(16.666% - 12px); /* 6 cards per row by default */
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 160px; /* Maximum width constraint */
+  }
+  
+  .movieCard:hover {
+    transform: scale(1.05);
+    z-index: 1;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  .movieImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2/3; /* Maintain movie poster aspect ratio */
+    object-fit: cover;
+    border-radius: 6px; /* Slightly smaller border radius */
+    cursor: pointer;
+  }
+  
+  .movieTitle {
+    color: white;
+    font-size: 12px; /* Smaller font size */
+    text-align: center;
+    margin-top: 6px; /* Reduced margin */
+    width: 100%;
     white-space: nowrap;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Media queries for different screen sizes */
+  @media (max-width: 1400px) {
+    .movieCard {
+      width: calc(20% - 12px); /* 5 cards per row */
     }
-}
+  }
+  
+  @media (max-width: 1200px) {
+    .movieCard {
+      width: calc(25% - 12px); /* 4 cards per row */
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .movieCard {
+      width: calc(33.333% - 12px); /* 3 cards per row */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .movieCard {
+      width: calc(50% - 10px); /* 2 cards per row */
+      max-width: 140px;
+    }
+    
+    .carousel {
+      padding: 15px 10px;
+      gap: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .movieCard {
+      width: calc(33.333% - 8px); /* 3 cards per row on small mobile */
+      max-width: 110px;
+    }
+    
+    .carousel {
+      padding: 10px 5px;
+      gap: 8px;
+    }
+    
+    .movieTitle {
+      font-size: 11px;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .movieCard {
+      width: calc(50% - 8px); /* 2 cards per row on very small mobile */
+    }
+  }
 
+  /* Navigation icons styling */
+.carouselIcon {
+    color: white;
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    
+    /* Centering the icons vertically */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    /* Add background for better visibility */
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .leftIcon {
+    left: 2%;
+  }
+  
+  .rightIcon {
+    right: 2%;
+  }
+  
+  /* Responsive sizing for icons */
+  @media (max-width: 992px) {
+    .carouselIcon {
+      height: 60px;
+      width: 60px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .carouselIcon {
+      height: 50px;
+      width: 50px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .carouselIcon {
+      height: 40px;
+      width: 40px;
+    }
+  }
 
+/*
 .icon{
     color: 'white'; 
     height:'70px';
@@ -36,4 +170,5 @@
 .rightIcon {
     right: 2%; 
 }
+    */
 

@@ -13,7 +13,11 @@ router.get('/api/movie', (req, res) => {
 //Route to fetch movies from the TMDB API
 router.get('/movies', async (req, res) => {
     try {
-        const url = `https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&with_genres=`;
+      const genreId = req.query.genreId;
+        let url = `https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&with_genres=`;
+        if (genreId) {
+          url += `&with_genres=${genreId}`;
+        }
         const response = await axios.get(url);
         res.json(response.data.results); // Send the movie data back to the frontend
     } catch (error) {
