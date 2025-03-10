@@ -12,4 +12,8 @@ db.connect((err) => {
     console.log('MySQL Connected...');
 });
 
+db.query((req, res) =>{
+    
+})
+
 module.exports = db;

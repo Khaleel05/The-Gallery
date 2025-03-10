@@ -9,25 +9,6 @@ exports.getAllUsers = (req, res) => {
         return res.json(data);
     });
 };
-/*
-//don't need this function any more.
-exports.checkLogin = (req, res) => {
-    const sql = "SELECT * FROM user WHERE Email = ? AND Password = ?";
-    const values = [
-        req.body.email,
-        req.body.password
-    ];
-
-    db.query(sql, values, (err, data) => {
-        if (err) return res.json("serverside app.post " + err);
-        if (data.length > 0) {
-            return res.json("exists");
-        } else {
-            return res.json("notexists");
-        }
-    });
-};
-*/
 
 exports.checkLogin = (req, res) => {
     const { email, password } = req.body;

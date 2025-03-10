@@ -20,7 +20,7 @@ const NavListData = [
     },
     {
         _id: 4,
-        link: "#blog",
+        link: "#Rankings",
         name: `Rankings`,
         active: false,
     }
