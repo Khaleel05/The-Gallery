@@ -3,7 +3,11 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const apiKey = process.env.REACT_TMDB_API_KEY
+const apiKey = process.env.REACT_APP_TMDB_API_KEY
+
+//console.log(process.env.REACT_APP_TMDB_API_KEY)
+
+//console.log('apiKey',apiKey)
 
 
 router.get('/api/movie', (req, res) => {
@@ -14,7 +18,7 @@ router.get('/api/movie', (req, res) => {
 router.get('/movies', async (req, res) => {
     try {
       const genreId = req.query.genreId;
-        let url = `https://api.themoviedb.org/3/discover/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&with_genres=`;
+        let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=`;
         if (genreId) {
           url += `&with_genres=${genreId}`;
         }
@@ -30,7 +34,7 @@ router.get('/movies', async (req, res) => {
 router.get('/movies/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      const url = `https://api.themoviedb.org/3/movie/${id}?api_key=ac8e81688a0f465351ee8afbfd35c253`;
+      const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
       const response = await axios.get(url);
       res.json(response.data); // Send the movie details back to the frontend
     } catch (error) {
@@ -44,7 +48,7 @@ router.get('/movies/:id', async (req, res) => {
 router.get('/movies/:id/videos', async (req, res) => {
     try {
       const { id } = req.params;
-      const url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=ac8e81688a0f465351ee8afbfd35c253`;
+      const url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`;
       const response = await axios.get(url);
       res.json(response.data); // Send the trailers back to the frontend
     } catch (error) {
@@ -57,7 +61,7 @@ router.get('/movies/:id/videos', async (req, res) => {
 router.get('/movies/:id/watch/providers', async (req, res) => {
     try {
       const { id } = req.params;
-      const url = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=ac8e81688a0f465351ee8afbfd35c253`;
+      const url = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${apiKey}`;
       const response = await axios.get(url);
       res.json(response.data); // Send the streaming providers back to the frontend
     } catch (error) {
@@ -70,7 +74,7 @@ router.get('/movies/:id/watch/providers', async (req, res) => {
 router.get('/movie/:id/recommendations', async(req, res) => {
     try {
         const { id } = req.params;
-        const url = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=ac8e81688a0f465351ee8afbfd35c253`;
+        const url = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`;
         const response = await axios.get(url);
         res.json(response.data); // Send the recommended movies data back to the frontend
     } catch (error) {
