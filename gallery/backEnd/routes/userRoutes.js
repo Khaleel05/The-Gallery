@@ -13,7 +13,7 @@ router.post('/', userController.checkLogin);
 router.post('/register', userController.registerUser);
 
 //Register a new user 
-router.get('/logout', userController.logout);
+router.get('/logout', userController.logoutUser);
 
 //Get current user profile
 router.get('/profile', userController.getUserProfile);
