@@ -22,7 +22,22 @@ exports.checkLogin = (req, res) => {
             const validPassword = await bcrypt.compare(password, hashedPassword); // Compare passwords
 
             if (validPassword) {
-                return res.json("exists"); // Login successful
+                //create session
+                const user = {
+                    id: data[0].ID,
+                    email: data[0].Email,
+                    name: data[0].Name,
+                    age: data[0].Age,
+                    gender: data[0].Gender
+                };
+
+                req.session.user = user;
+
+                return res.json({
+                    status: "exists",
+                    user: user
+
+                }); // Login successful
             } else {
                 return res.json("wrongpassword"); // Incorrect password
             }
@@ -35,7 +50,7 @@ exports.checkLogin = (req, res) => {
 
 // Register a new user
 exports.registerUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { name, email, password, age, gender } = req.body;
 
     try {
         // Check if user already exists
@@ -50,14 +65,64 @@ exports.registerUser = async (req, res) => {
                 const hashedPassword = await bcrypt.hash(password, 10);
 
                 // Insert new user
-                const insertQuery = "INSERT INTO user ( Email, Password) VALUES ( ?, ?)";
-                db.query(insertQuery, [ email, hashedPassword], (err, result) => {
+                const insertQuery = "INSERT INTO user ( Email, Password, Name, Age, Gender) VALUES ( ?, ?, ?, ?, ?)";
+                db.query(insertQuery, [ email, hashedPassword, name, age, gender], (err, result) => {
                     if (err) return res.status(500).json({ error: "Server error: " + err });
-                    return res.json("notexists");
+
+                    //create session for the new user
+                    const user = {
+                        id: result.insertID,
+                        email: email,
+                        name: name,
+                        age: age,
+                        gender: gender
+                    }
+
+                    req.session.user = user;
+
+                    return res.json({
+                        status: "notexists",
+                        user: user
+                    });
                 });
             }
         });
     } catch (error) {
         res.status(500).json({ error: "Unexpected error: " + error.message });
+    }
+};
+
+
+//handles logout user 
+exports.logoutUser = (req, res) => {
+    if (req.session.user && req.cookies.user_sid){
+        res.clearCookie('user_sid');
+        req.session.destroy((err) => {
+            if (err){
+                return res.status(500).json({error: "Error loging out"});
+            }
+            res.json({message: "logged out successfully" });
+        });
+    }else{
+        res.json({message: "Already logged out"});
+    }
+}; 
+
+//Get current user profile
+exports.getUserProfile = (req, res) =>{
+    if(req.session.user && req.cookies.user_sid){
+        const userID = req.session.user.id;
+        const query = "SELECT ID, Name, Email, Age, gender From user WHERE ID = ?";
+
+        db.query(qiery, [userId], (err, data) => {
+            if (err) return res.status(500).json({error: "server error:" + err});
+            if(data.length > 0){
+                return res.jso(data[0]);
+            }else{
+                return res.status(404).json({error:"user not found"});
+            }
+        });
+    }else{
+        res.status(401).json({error: "Not authenticated"})
     }
 };

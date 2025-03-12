@@ -1,16 +1,20 @@
 const mysql = require('mysql');
 require('dotenv').config();
 
-const db = mysql.createConnection({
+//create a pool instead of a single connection for better performance with sessions. 
+const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'gallery'
+    database: 'gallery',
+    connectionLimit:10
 });
 
-db.connect((err) => {
+//Test the connection. 
+db.getConnection((err, connection) => {
     if (err) throw err;
     console.log('MySQL Connected...');
+    connection.release();
     //console.log(process.env.REACT_APP_TMDB_API_KEY)
 });
 
