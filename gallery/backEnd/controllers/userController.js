@@ -114,7 +114,7 @@ exports.getUserProfile = (req, res) =>{
         const userID = req.session.user.id;
         const query = "SELECT ID, Name, Email, Age, gender From user WHERE ID = ?";
 
-        db.query(qiery, [userId], (err, data) => {
+        db.query(query, [userId], (err, data) => {
             if (err) return res.status(500).json({error: "server error:" + err});
             if(data.length > 0){
                 return res.jso(data[0]);
@@ -124,5 +124,39 @@ exports.getUserProfile = (req, res) =>{
         });
     }else{
         res.status(401).json({error: "Not authenticated"})
+    }
+};
+
+//Creating users favourites list. 
+exports.setUserFavouriteList = async (req, res) =>{
+    const{email, movieID, year, cast} = req.body;
+
+    try{
+        let user = {email};
+        const emailBreakdown = user.split("@");
+        let emailPrefix = toString(emailBreakdown[0]);
+        //check if the table exist already
+        const checkLikedTable = `SHOW TABLE LIKE ' ${emailPrefix}'`;
+        db.query(checkLikedTable, (err, results) => {
+            if (err) {
+              console.error("Error checking table existence:", err);
+              return;
+            }
+            if (results.length > 0) {
+                console.log(`Table '${tableName}' exists.`);
+                const insertQuery = `'INSERT INTO ${emailPrefix} ( movieID, year, cast) VALUES ( ?, ?, ?)'`;
+                db.query(insertQuery, [movieID, year, cast])
+              } else {
+                console.log(`Table '${tableName}' does NOT exist.`);
+                const createQuery=`CREATE TABLE '${emailPrefix}' (movieID INT, year INT, cast VARCHAR(255))`;
+                db.query(createQuery)
+                const insertQuery = `'INSERT INTO ${emailPrefix} ( movieID, year, cast) VALUES ( ?, ?, ?)'`;
+                db.query(insertQuery, [movieID, year, cast])
+                console.log(`${emailPrefix} table was created. `)
+              }
+        });
+    }catch(error){
+        res.json(error);
+
     }
 };
