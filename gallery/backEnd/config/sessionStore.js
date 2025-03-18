@@ -19,4 +19,8 @@ const option = {
 
 const sessionStore = new MySQLStore(option);
 
+sessionStore.on('error', function(error) {
+    console.error('Session store error:', error);
+  });
+
 module.exports =  sessionStore;

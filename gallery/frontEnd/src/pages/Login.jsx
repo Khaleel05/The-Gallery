@@ -49,12 +49,9 @@ function Login() {
 
     return(
         <div>
-            {/* <div>
-                <h1 style={loginStyle.heading}>
-                    The Gallery 
-                </h1>
-            </div> */}
+
             <LoginForm />
+            
         </div>
         
     )

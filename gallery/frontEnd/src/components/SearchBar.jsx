@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import './searchBar.css'
 
@@ -11,9 +11,11 @@ function SearchBar({ setSearchedMovies }) {
       if (input.length > 2) {
         try {
           const response = await axios.get(
-            `https://api.themoviedb.org/3/search/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&query=${input}`
-          );
+            `http://localhost:8081/api/search?query=${input}`,{
+            Credentials:'include' 
+          });
           setSearchedMovies(response.data.results);
+          console.log(setSearchedMovies)
         } catch (error) {
           console.error(error);
         }

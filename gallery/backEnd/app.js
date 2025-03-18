@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     origin:'http://localhost:3000', //The React apps URL.
-    credential: true //Allows cookies to be sent.
+    credentials: true //Allows cookies to be sent.
 }));
 
 //set up session middleware
@@ -34,6 +34,8 @@ app.use(session({
 
 }));
 
+app.use(express());
+
 //Clear cookie if no session exists
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user){
@@ -43,10 +45,12 @@ app.use((req, res, next) => {
 });
 
 const sessionChecker = (req, res, next) =>{
-    if (req.session.user && request.cookie.user_sid){
+    if (req.session.user && req.cookie.user_sid){
         next();
     }else{
         res.status(401).json({authenticated:false, message: 'NOT Authenticated'})
+        console.log('failed to authenticate')
+        console.log(req.session.user)
     }
 };
 

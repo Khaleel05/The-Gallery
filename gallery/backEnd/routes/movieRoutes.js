@@ -17,6 +17,7 @@ router.get('/api/movie', (req, res) => {
 //Route to fetch movies from the TMDB API
 router.get('/movies', async (req, res) => {
     try {
+      //console.log('Api recieved');
       const genreId = req.query.genreId;
         let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=`;
         if (genreId) {
@@ -82,5 +83,19 @@ router.get('/movie/:id/recommendations', async(req, res) => {
         res.status(500).json({ error: 'Failed to fetch recommended movies' });
     }
 });
+
+router.get("/search", async (req, res) => {
+  const { query } = req.query;
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?api_key=ac8e81688a0f465351ee8afbfd35c253&query=${query}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch movies" });
+  }
+});
+
+
 
 module.exports = router;

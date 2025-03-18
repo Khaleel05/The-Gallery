@@ -35,12 +35,13 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     //login function
-    const login = async(EmailAuthCredential, password)=>{
+    const login = async(email, password)=>{
         try{
-            const res = await axios.post('http//localhost:8081/user', { email, password});
+            const res = await axios.post('http://localhost:8081/user', { email, password});
             if (res.data.status === 'exists'){
                 setCurrentUser(res.data.user);
                 setIsAuthenticated(true);
+                return{success: true, message: res.data};
             }else{
                 return{ success: false, message: res.data };
             }
@@ -81,6 +82,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     return(
-        {children}
+        <AuthContext.Provider value={{ 
+            currentUser, 
+            isAuthenticated, 
+            loading, 
+            login, 
+            register, 
+            logout 
+          }}>
+            {children}
+          </AuthContext.Provider>
     );
 };

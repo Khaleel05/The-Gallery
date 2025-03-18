@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Header from '../sections/Header'
 import './home.css'
 import Carousel from '../sections/Carousel'
 import Banner from '../sections/Banner'
 import GenreApiList from '../data/GenreApiList'
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'
 
 
 
@@ -12,6 +13,14 @@ import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const navigate = useNavigate();
+
+  //Access the Auth context.
+  const {currentUser, isAuthenticated, loading: authLoading} =useContext(AuthContext);
+
+  // Add console logs to check the values
+  console.log('Auth Context in Home:', { currentUser, isAuthenticated, authLoading });
+
+
   // State to manage searched movies
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [genreMovies, setGenreMovies] = useState({});
@@ -26,7 +35,14 @@ function Home() {
       // Fetch movies for each genre
       for (const genre of GenreApiList) {
         try {
-          const response = await fetch(`http://localhost:8081/api/movies?genreId=${genre.id}`);
+          const response = await fetch(`http://localhost:8081/api/movies?genreId=${genre.id}`,{
+            credentials:'include'
+        });
+        if (response.status === 401){
+          //not authenticated redirect to login 
+          console.log('api call not authenticated')
+          break;
+        }
           const data = await response.json();
           moviesData[genre.id] = data;
         } catch (error) {
@@ -84,5 +100,6 @@ function Home() {
     </div>
   );
 }
+
 
 export default Home
