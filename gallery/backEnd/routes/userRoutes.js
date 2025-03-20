@@ -18,4 +18,7 @@ router.get('/logout', userController.logoutUser);
 //Get current user profile
 router.get('/profile', userController.getUserProfile);
 
+//Add movie to the users favourite list
+//router.post('/favouritres', userController.setUserFavouriteList); 
+
 module.exports = router;

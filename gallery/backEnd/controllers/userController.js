@@ -127,6 +127,7 @@ exports.getUserProfile = (req, res) =>{
     }
 };
 
+/*
 //Creating users favourites list. 
 exports.setUserFavouriteList = async (req, res) =>{
     const{email, movieID, year, cast} = req.body;
@@ -160,3 +161,4 @@ exports.setUserFavouriteList = async (req, res) =>{
 
     }
 };
+*/
