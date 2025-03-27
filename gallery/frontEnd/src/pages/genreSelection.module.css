@@ -1,0 +1,76 @@
+.genreContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #e6e6e6;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.genreButtonContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.genreButton {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 15px;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    background-color: #21262d;
+    color: #e6e6e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+}
+
+.genreButton:hover {
+    background-color: #30363d;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.genreButton:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.4);
+}
+
+.selectedGenre {
+    background-color: #58a6ff;
+    border-color: #58a6ff;
+    color: #0d1117;
+}
+
+.nextButton {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px 15px;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    background-color: #a74b4b;
+    color: #e6e6e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+    margin-top: 1rem;
+}
+
+.nextButton:disabled {
+    background-color: #4a4a4a;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

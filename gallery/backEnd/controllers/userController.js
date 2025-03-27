@@ -127,38 +127,23 @@ exports.getUserProfile = (req, res) =>{
     }
 };
 
-/*
-//Creating users favourites list. 
-exports.setUserFavouriteList = async (req, res) =>{
-    const{email, movieID, year, cast} = req.body;
-
+exports.setGenreFavourite = async (req, res) =>{
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'User not authenticated' });
+    }
+    const userId = req.session.user.id;
+    const { selectedGenres } = req.body;
     try{
-        let user = {email};
-        const emailBreakdown = user.split("@");
-        let emailPrefix = toString(emailBreakdown[0]);
-        //check if the table exist already
-        const checkLikedTable = `SHOW TABLE LIKE ' ${emailPrefix}'`;
-        db.query(checkLikedTable, (err, results) => {
-            if (err) {
-              console.error("Error checking table existence:", err);
-              return;
-            }
-            if (results.length > 0) {
-                console.log(`Table '${tableName}' exists.`);
-                const insertQuery = `'INSERT INTO ${emailPrefix} ( movieID, year, cast) VALUES ( ?, ?, ?)'`;
-                db.query(insertQuery, [movieID, year, cast])
-              } else {
-                console.log(`Table '${tableName}' does NOT exist.`);
-                const createQuery=`CREATE TABLE '${emailPrefix}' (movieID INT, year INT, cast VARCHAR(255))`;
-                db.query(createQuery)
-                const insertQuery = `'INSERT INTO ${emailPrefix} ( movieID, year, cast) VALUES ( ?, ?, ?)'`;
-                db.query(insertQuery, [movieID, year, cast])
-                console.log(`${emailPrefix} table was created. `)
-              }
-        });
-    }catch(error){
-        res.json(error);
+        //insert new Genres
+        const genreInserts = selectedGenres.map(genre =>db.query(
+            'INSERT INTO user_genres (user_id, genre_id, genre_name) VALUES (?, ?, ?)', 
+            [userId, genre.id, genre.name]
+        ));
 
+        //wait for all inserts to complete
+        await Promise.all(GenreInserts);
+    }catch(error){
+        console.error('Error saving genres: ', error);
+        res.status(500).json({error: 'failed to save genres'});
     }
 };
-*/

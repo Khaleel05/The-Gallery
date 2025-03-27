@@ -30,7 +30,146 @@ header.scrolled{
     text-transform: uppercase;
 }
 
-
 .nav{
     display: flex;
+}
+
+/* Hamburger menu styles */
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger-icon {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    margin: 0px;
+    transform: rotate(0deg);
+    transition: .5s ease-in-out;
+}
+
+.hamburger-icon span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+}
+
+.hamburger-icon span:nth-child(1) {
+    top: 0px;
+}
+
+.hamburger-icon span:nth-child(2) {
+    top: 8px;
+}
+
+.hamburger-icon span:nth-child(3) {
+    top: 16px;
+}
+
+.hamburger-icon.open span:nth-child(1) {
+    top: 8px;
+    transform: rotate(135deg);
+}
+
+.hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+}
+
+.hamburger-icon.open span:nth-child(3) {
+    top: 8px;
+    transform: rotate(-135deg);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu-items {
+    display: none;
+}
+
+/* Media query for window resizing - will activate when window gets narrower than 1024px */
+@media screen and (max-width: 1024px) {
+    header {
+        padding: 15px 30px;
+    }
+    
+    header.scrolled {
+        padding: 10px 30px;
+    }
+    
+    .hamburger-menu {
+        display: block;
+    }
+    
+    .desktop-controls {
+        display: none;
+    }
+    
+    .nav-container {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.9);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 70px;
+        transition: 0.3s;
+        z-index: 1000;
+    }
+    
+    .nav-container.open {
+        right: 0;
+    }
+    
+    .nav {
+        flex-direction: column;
+        width: 100%;
+        padding: 20px 0;
+    }
+    
+    .nav li {
+        margin: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .mobile-menu-items {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* Add additional breakpoint for very narrow windows */
+@media screen and (max-width: 600px) {
+    header {
+        padding: 15px 20px;
+    }
+    
+    header.scrolled {
+        padding: 10px 20px;
+    }
+    
+    .nav-container {
+        width: 250px;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
 }
