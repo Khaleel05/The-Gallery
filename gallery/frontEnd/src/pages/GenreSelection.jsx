@@ -1,10 +1,12 @@
-import React, { useState, useContext } from 'react'
-import GenreApiList from '../data/GenreApiList'
-import Style from './genreSelection.module.css'
+import React, { useState, useContext } from 'react';
+import GenreApiList from '../data/GenreApiList';
+import Style from './genreSelection.module.css';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext to get current user info
 import axios from 'axios';
 
 function GenreSelection() {
+    const navigate = useNavigate();
     const [selectedGenres, setSelectedGenres]=useState([]);
     const { currentUser } = useContext(AuthContext); // Get current user from AuthContext
     const _ = require('lodash')
@@ -26,11 +28,36 @@ function GenreSelection() {
     const handleNext = async(e) =>{
         e.preventDefault();
 
-        try{
+        // Check if any genres are selected
+        if (selectedGenres.length === 0) {
+            alert('Please select at least one genre');
+            return;
+        }
+
+        try {
+            // Send selected genres and user ID to backend
             const res = await axios.post("http://localhost:8081/user/genreSelection", {
-                
+                userId: currentUser.email,
+                selectedGenres: selectedGenres.map(genre => ({
+                    id: genre.genreId,
+                    name: genre.genreName
+                }))
+            }, {
+                withCredentials: true // Important for sending cookies/session
             });
-        }catch(error){}
+
+            // Handle successful response 
+            console.log('Genres saved successfully', res.data);
+            
+            // Add navigation or next step logic here
+            navigate('/home')
+            // For example: navigate to next page or show success message
+            //alert('Genres saved successfully!');
+
+        } catch(error) {
+            console.error('Error saving genres:', error);
+            alert('Failed to save genres. Please try again.');
+        }
     } 
 
 
@@ -53,7 +80,12 @@ function GenreSelection() {
           </button>
         ))}
       </div>
-      <button className={Style.nextButton}>Next</button>
+      <button 
+      className={Style.nextButton}
+      onClick={handleNext}
+      >
+        Next
+      </button>
     </div>
   )
 }

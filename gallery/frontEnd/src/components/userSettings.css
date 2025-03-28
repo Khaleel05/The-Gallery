@@ -6,10 +6,11 @@
 }
 
 .user ion-icon {
+    color: #ffffff;
     position: absolute;
     height: 40px;
     width: 40px;
-    color: #ffffff;
+    
 }
 
 /* Dropdown content (hidden by default)*/

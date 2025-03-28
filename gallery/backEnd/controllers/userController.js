@@ -131,8 +131,10 @@ exports.setGenreFavourite = async (req, res) =>{
     if (!req.session.user) {
         return res.status(401).json({ error: 'User not authenticated' });
     }
-    const userId = req.session.user.id;
+    const userId = req.session.user.email;
     const { selectedGenres } = req.body;
+    console.log(userId);
+    console.log(selectedGenres);
     try{
         //insert new Genres
         const genreInserts = selectedGenres.map(genre =>db.query(
@@ -141,7 +143,9 @@ exports.setGenreFavourite = async (req, res) =>{
         ));
 
         //wait for all inserts to complete
-        await Promise.all(GenreInserts);
+        await Promise.all(genreInserts);
+
+        res.status(200).json({ message: 'Genres saved successfully' });
     }catch(error){
         console.error('Error saving genres: ', error);
         res.status(500).json({error: 'failed to save genres'});
