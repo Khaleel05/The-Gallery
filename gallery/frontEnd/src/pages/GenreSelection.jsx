@@ -2,23 +2,36 @@ import React, { useState, useContext } from 'react'
 import GenreApiList from '../data/GenreApiList'
 import Style from './genreSelection.module.css'
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext to get current user info
+import axios from 'axios';
 
 function GenreSelection() {
     const [selectedGenres, setSelectedGenres]=useState([]);
     const { currentUser } = useContext(AuthContext); // Get current user from AuthContext
+    const _ = require('lodash')
 
-    const handleGenreSelect = (genreId) => {
+    const handleGenreSelect = (genreId, genreName) => {
         setSelectedGenres(prevSelected => {
+            const selectedItem = _.find(prevSelected,{genreId, genreName})
             // If genre is already selected, remove it
-            if (prevSelected.includes(genreId)) {
-                return prevSelected.filter(id => id !== genreId)
+            if (_.isEqual(selectedItem, {genreId, genreName})) {
+                return prevSelected.filter((item) => item.genreId !== genreId)
             }
             // Otherwise, add the genre
-            return [...prevSelected, genreId]
+            return [...prevSelected, {genreId, genreName}]
         })
     }
     console.log(currentUser)
     console.log(selectedGenres)
+
+    const handleNext = async(e) =>{
+        e.preventDefault();
+
+        try{
+            const res = await axios.post("http://localhost:8081/user/genreSelection", {
+                
+            });
+        }catch(error){}
+    } 
 
 
 
@@ -32,9 +45,9 @@ function GenreSelection() {
           <button 
             key={genre.id} 
             className={`${Style.genreButton} ${
-                selectedGenres.includes(genre.id) ? Style.selectedGenre : ''
+                _.find(selectedGenres,{genreId:genre.id, genreName: genre.name}) ? Style.selectedGenre : ''
             }`}
-            onClick={() => handleGenreSelect(genre.id)}
+            onClick={() => handleGenreSelect(genre.id, genre.name)}
           >
             {genre.name}
           </button>
