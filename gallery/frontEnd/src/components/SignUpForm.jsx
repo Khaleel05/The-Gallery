@@ -189,7 +189,7 @@ function SignUpForm() {
             } else if (res.data.status === "notexists") {
                 setSuccess(true);
                 alert("User created successfully!");
-                window.location.href = "/login";//change this to the genre page. 
+                window.location.href = "/genreSelection";//change this to the genre page. 
             } else {
                 setErrMsg("Registration failed. Try again.");
             }

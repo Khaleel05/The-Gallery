@@ -1,18 +1,47 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Header from '../sections/Header'
 import './profile.css'; // You'll need to create this CSS file
+import axios from 'axios';
 
 function Profile() {
-    const { currentUser, logout } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [favoriteMoviesCount, setFavoriteMoviesCount] = useState(0);
   const [formData, setFormData] = useState({
     name: currentUser?.name || '',
     email: currentUser?.email || '',
     bio: currentUser?.bio || ''
   });
+
+  // Fetch favorite movies count
+  useEffect(() => {
+    const fetchFavoriteMoviesCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/api/user/favorites', {
+          withCredentials: true // Important for session-based authentication
+        });
+        // Log the response to understand its structure
+        console.log('Favorites response:', response.data);
+
+        // Ensure we're working with an array
+        const favorites = Array.isArray(response.data) 
+          ? response.data 
+          : (response.data.results || []);
+
+        setFavoriteMoviesCount(favorites.length);
+      } catch (error) {
+        console.error('Error fetching favorite movies:', error);
+        setFavoriteMoviesCount(0);
+      }
+    };
+
+    if (currentUser) {
+      fetchFavoriteMoviesCount();
+    }
+  }, [currentUser]);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -23,8 +52,6 @@ function Profile() {
     });
   };
 
-  //Handle logout funtion 
-  
   // If user is not loaded or not authenticated
   if (!currentUser) {
     return (
@@ -124,7 +151,7 @@ function Profile() {
       <div className="profile-stats">
         <div className="stat-card">
           <h3>Favorite Movies</h3>
-          <p className="stat-number">{currentUser.favorites?.length || 0}</p>
+          <p className="stat-number">{favoriteMoviesCount}</p>
         </div>
         <div className="stat-card">
           <h3>Reviews</h3>

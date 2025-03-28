@@ -228,15 +228,23 @@ router.get('/user/favorites', async (req, res) => {
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    const userId = req.session.user.id;
+    const userId = req.session.user.email;
+    console.log(userId);
 
     // Get all favorites for the user
-    const [favorites] = await db.query(
+    db.query(
       'SELECT * FROM user_favorites WHERE user_id = ? ORDER BY added_at DESC',
-      [userId]
-    );
+      [userId],
+      (error, results) => {
+        if (error) {
+          console.error('Error fetching favorites:', error);
+          return res.status(500).json({ error: 'Failed to fetch favorites' });
+        }
 
-    res.status(200).json(favorites);
+        console.log('Favorites retrieved:', results); // Added logging for debugging
+        res.status(200).json(results);
+      }
+    );
   } catch (error) {
     console.error('Error fetching favorites:', error);
     res.status(500).json({ error: 'Failed to fetch favorites' });
