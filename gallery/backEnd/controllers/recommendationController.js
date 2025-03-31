@@ -6,10 +6,10 @@ const apiKey = process.env.REACT_APP_TMDB_API_KEY;
 
 
 //Function to get users' favourites 
-const getUserFavourites = async (userID)=>{
+const getUserFavourites = async (userId)=>{
     return new Promise((resolve, reject)=>{
         db.query (
-            'SELECT * FROM user_favourites WHERE user_id = ?',
+            'SELECT * FROM user_favorites WHERE user_id = ?',
             [userId],
             (error, results)=>{
                 if(error){
@@ -58,7 +58,7 @@ exports.getContentBasedRecommendations = async (req, res) => {
         const userId = req.session.user.email;
         
         // Get user's favorite movies
-        const favorites = await getUserFavorites(userId);
+        const favorites = await getUserFavourites(userId);
 
 
         if (favorites.length === 0) {
@@ -91,7 +91,7 @@ exports.getContentBasedRecommendations = async (req, res) => {
         }
         //collect all unique genre and cast members 
         const allGenres = new Set();
-        const allCast = new set();
+        const allCast = new Set();
 
         movieProfiles.forEach(profile =>{
             profile.genres.forEach(genreId => allGenres.add(genreId));
@@ -108,7 +108,7 @@ exports.getContentBasedRecommendations = async (req, res) => {
             );
             for (const movie of response.data.results){
                 //skip movies that are already in favourites
-                if(favourites.some(fav => parseInt(fav.movie_id)===movie.id)){
+                if(favorites.some(fav => parseInt(fav.movie_id)===movie.id)){
                     continue;
                 }
 

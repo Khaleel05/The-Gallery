@@ -7,10 +7,6 @@ import GenreApiList from '../data/GenreApiList'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'
 
-
-
-
-
 function Home() {
   const navigate = useNavigate();
 
@@ -67,7 +63,12 @@ function Home() {
     <div>
       <Header setSearchedMovies={setSearchedMovies} />
       <div id="Pbody">
-        {searchedMovies.length > 0 ? (
+        {loading ? (
+          <div className="loading-container">
+            <div className="loader"></div>
+            <p>Loading movies...</p>
+          </div>
+        ) : searchedMovies.length > 0 ? (
           <div className="movie-grid">
             {searchedMovies.map((movie) => (
               <div key={movie.id} className="movie-card">
