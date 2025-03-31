@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const sessionStore = require('./config/sessionStore'); 
 const userRoutes = require('./routes/userRoutes');
 const movieRoutes = require('./routes/movieRoutes'); // Import the new movie route
+const recommendationRoutes = require('./routes/recommendationRoutes');
 
 
 //console.log(process.env.REACT_APP_TMDB_API_KEY);
@@ -57,6 +58,7 @@ const sessionChecker = (req, res, next) =>{
 // Routes
 app.use('/user', userRoutes);
 app.use('/api', movieRoutes); // Use the movie route under /api
+app.use('/api/recommendations', recommendationRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
