@@ -10,6 +10,7 @@ import Favourites from './pages/Favourites';
 import Rankings from './pages/Rankings';
 import Profile from './pages/Profile';
 import GenreSelection from './pages/GenreSelection';
+import UserMovieSelection from './pages/UserMovieSelection';
 
 
 console.log(process.env.REACT_APP_TMDB_API_KEY);
@@ -37,7 +38,8 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/genreSelection" element={<GenreSelection/>}/> 
+            <Route exact path="/genreSelection" element={<GenreSelection/>}/>
+            <Route exact path="/userMovieSelection" element={<UserMovieSelection/>}/> 
             <Route 
                 exact path="/home" 
                 element={

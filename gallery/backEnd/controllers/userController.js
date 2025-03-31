@@ -151,3 +151,32 @@ exports.setGenreFavourite = async (req, res) =>{
         res.status(500).json({error: 'failed to save genres'});
     }
 };
+
+exports.getUserGenres = async (req, res) =>{
+    try {
+        // Check if user is authenticated
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'User not authenticated' });
+        }
+
+        const userId = req.session.user.email;
+        console.log(userId)
+
+        // Query to fetch user's selected genres
+        db.query(
+            'SELECT DISTINCT genre_id FROM user_genres WHERE user_id = ?',
+            [userId],
+            (error, results) => {
+                if (error) {
+                    console.error('Error fetching user genres:', error);
+                    return res.status(500).json({ error: 'Failed to fetch user genres' });
+                }
+
+                res.status(200).json(results);
+            }
+        );
+    } catch (error) {
+        console.error('Error in user genres route:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}

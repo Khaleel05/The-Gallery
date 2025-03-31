@@ -50,7 +50,7 @@ function GenreSelection() {
             console.log('Genres saved successfully', res.data);
             
             // Add navigation or next step logic here
-            navigate('/home')
+            navigate('/userMovieSelection')
             // For example: navigate to next page or show success message
             //alert('Genres saved successfully!');
 

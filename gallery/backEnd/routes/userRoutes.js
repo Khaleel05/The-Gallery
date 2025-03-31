@@ -21,4 +21,6 @@ router.get('/profile', userController.getUserProfile);
 //Add genre to the database
 router.post('/genreSelection', userController.setGenreFavourite); 
 
+//Get the users favourite genres
+router.get('/userMovieSelection', userController.getUserGenres);
 module.exports = router;
