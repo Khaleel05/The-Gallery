@@ -15,20 +15,21 @@ import UserMovieSelection from './pages/UserMovieSelection';
 
 console.log(process.env.REACT_APP_TMDB_API_KEY);
 
+
 //Protected route component 
-const ProtectedRoute = ({children}) =>{
-  const {isAuthenticated, loading } = React.useContext(AuthProvider);
+// const ProtectedRoute = ({children}) =>{
+//   const {isAuthenticated, loading } = React.useContext(AuthProvider);
 
-  if (loading){
-    return ('loading...');
-  }
-  if(!isAuthenticated){
-    return(<navigate to="/home"/>, console.log('you have not been authenticated'));
-  }
+//   if (loading){
+//     return ('loading...');
+//   }
+//   if(!isAuthenticated){
+//     return(<navigate to="/home"/>, console.log('you have not been authenticated'));
+//   }
 
-  return (children, console.log('you are authenticated'));
+//   return (children, console.log('you are authenticated'));
 
-};
+// };
 
 function App() {
   return (
