@@ -11,7 +11,8 @@
     width: 100%;
 }
 
-.recommendationsContainer {
+.recommendationsContainer,
+.genreRecommendationsContainer {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
@@ -26,6 +27,16 @@
 .subtitle {
     font-size: 1rem;
     color: #aaaaaa;
+    margin-bottom: 2rem;
+}
+
+.genreTitle {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    color: #ffffff;
+}
+
+.genreSection {
     margin-bottom: 2rem;
 }
 
@@ -182,6 +193,14 @@
 .errorMessage {
     color: #e74c3c;
     margin-bottom: 16px;
+}
+
+.emptyMoviesMessage {
+    color: #aaaaaa;
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
 }
 
 .loginButton, .exploreButton {

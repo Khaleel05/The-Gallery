@@ -33,12 +33,12 @@ function Home() {
         try {
           const response = await fetch(`http://localhost:8081/api/movies?genreId=${genre.id}`,{
             credentials:'include'
-        });
-        if (response.status === 401){
-          //not authenticated redirect to login 
-          console.log('api call not authenticated')
-          break;
-        }
+          });
+          if (response.status === 401){
+            //not authenticated redirect to login 
+            console.log('api call not authenticated')
+            break;
+          }
           const data = await response.json();
           moviesData[genre.id] = data;
         } catch (error) {
@@ -54,6 +54,7 @@ function Home() {
     fetchMoviesByGenre();
   }, []);
 
+  useEffect(()=>{console.log(genreMovies)},[]);
   const handleClick = (id) => {
     navigate(`/details/${id}`);
     console.log(id);

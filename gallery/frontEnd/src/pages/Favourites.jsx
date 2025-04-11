@@ -3,15 +3,22 @@ import Header from '../sections/Header'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Style from './recommendations.module.css'; // You'll need to create this CSS module
+import axios from 'axios';
+import GenreApiList from '../data/GenreApiList';
+import Carousel from '../sections/Carousel'
 
 
 function Favourites() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
   const [recommendations, setRecommendations] = useState([]);
+  const [userGenres, setUserGenres] = useState([]);
+  const [genreMovies, setGenreMovies] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchedMovies, setSearchedMovies] = useState([]);
+  const [genreMap, setGenreMap] = useState([]);
+  
 
   useEffect(() => {
       // Only fetch recommendations if user is logged in
@@ -51,6 +58,99 @@ function Favourites() {
       fetchRecommendations();
   }, [currentUser]);
 
+  // Fetch user's selected genres and movies
+  useEffect(() => {
+    const fetchUserGenres = async () => {
+        try {
+            // Fetch user's genres from the backend
+            const response = await fetch('http://localhost:8081/user/userMovieSelection', {
+                credentials: 'include'
+            });
+
+            const genreResponse = await response.json();
+            console.log('genreResponse: ',genreResponse);
+            const genreList = [];
+
+            for (const genre of genreResponse ){
+                console.log(genre.genre_id);
+                genreList.push(genre.genre_id);
+                console.log('GL:', genreList)
+            }
+            console.log(genreList)
+            setUserGenres(genreList);
+            
+            if (response.length === 0) {
+                console.log(response.data);
+                console.log('no data returned!')
+                // If no genres found, redirect to genre selection
+                //navigate('/home');
+                return;
+            }
+
+            console.log('UG: ', userGenres)
+        } catch (error) {
+            console.error('Error fetching user genres:', error);
+            //navigate('/home');
+            console.log('Error fetching user gneres');
+        }
+    };
+
+    fetchUserGenres();
+  }, []);
+
+  // Map genres from IDs to names when userGenres changes
+  useEffect(() => {
+    if (userGenres.length > 0) {
+      const newGenreMap = [];
+      
+      for (const genre of userGenres) {
+        for (const locatedGenre of GenreApiList) {
+          if (genre === locatedGenre.id) {
+            newGenreMap.push({id: locatedGenre.id, name: locatedGenre.name});
+            break;
+          }
+        }
+      }
+      
+      setGenreMap(newGenreMap);
+      console.log('Updated genre map:', newGenreMap);
+    }
+  }, [userGenres]);
+
+  // Fetch movies for each genre when genreMap changes
+  useEffect(() => {
+    const fetchMoviesByGenre = async () => {
+      if (genreMap.length === 0) return;
+      
+      const moviesData = {};
+
+      for (const favGenre of genreMap) {
+        try {
+          const response = await fetch(`http://localhost:8081/api/movies?genreId=${favGenre.id}`, {
+            credentials: 'include'
+          });
+          
+          if (response.status === 401) {
+            // Not authenticated redirect to login 
+            console.log('api call not authenticated');
+            break;
+          }
+          
+          const data = await response.json();
+          moviesData[favGenre.id] = data;
+        } catch (error) {
+          console.error(`Error fetching movies for genre ${favGenre.name}:`, error);
+          moviesData[favGenre.id] = [];
+        }
+      }
+      
+      setGenreMovies(moviesData);
+      console.log('Updated genre movies:', moviesData);
+    };
+
+    fetchMoviesByGenre();
+  }, [genreMap]);
+
   // Handle click on a movie card
   const handleClick = (id) => {
       navigate(`/details/${id}`);
@@ -73,7 +173,7 @@ function Favourites() {
                       {!currentUser && (
                           <button 
                               className={Style.loginButton}
-                              onClick={() => navigate('/login')}
+                              onClick={() => navigate('login')}
                           >
                               Login to see recommendations
                           </button>
@@ -132,6 +232,34 @@ function Favourites() {
                       </div>
                   </div>
               )}
+              {/* Genre Based Recommendation */ }
+              <div className={Style.genreRecommendationsContainer}>
+                {userGenres.length === 0 ? (
+                  <div className={Style.emptyContainer}>
+                    <p>Favourite genre has not been selected.</p>
+                  </div>
+                ) : genreMap.length === 0 ? (
+                  <div className={Style.loadingContainer}>
+                    <div className={Style.loader}></div>
+                    <p>Loading genre recommendations...</p>
+                  </div>
+                ) : (
+                  <>
+                    <h2 className={Style.title}>Movies from your favourite Genres</h2>
+                    {genreMap.map((genre) => (
+                      genreMovies[genre.id] && genreMovies[genre.id].length > 0 ? (
+                        <Carousel 
+                          key={genre.id} 
+                          genre={genre.name} 
+                          genreId={genre.id}
+                          movies={genreMovies[genre.id] || []}
+                          handleClick={handleClick}
+                        />
+                      ) : null
+                    ))}
+                  </>
+                )}
+              </div>
           </div>
       </div>
   );
