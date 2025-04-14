@@ -20,6 +20,8 @@ function MovieDetails() {
     const [loading, setLoading] = useState(true);
     const [isFavorite, setIsFavorite] = useState(false);
     const [favoriteLoading, setFavoriteLoading] = useState(false);
+    const [watchList, setWatchlist] = useState(false);
+    const [watchListLoading, setWatchListLoading] = useState(false);
     // State to manage searched movies
     const [searchedMovies, setSearchedMovies] = useState([]);
   
@@ -117,6 +119,69 @@ function MovieDetails() {
           setFavoriteLoading(false);
         });
     };
+
+    //check if movie is in the users favourites 
+    const checkWatchListStatus = () =>{
+      if (!currentUser) return;
+
+      fetch(`http://localhost:8081/api/user/watchList/check/${id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          setWatchlist(data.onWatchList);
+          //console.log('checking watch list: ', data.onWatchList);
+        })
+        .catch(error => {
+          console.error('Error checking favorite status:', error);
+        });
+    }
+
+    //toggle watch list.
+    const toggleWatchList = () => {
+      if(!currentUser){
+        // Redirect to login if user is not authenticated
+        navigate('/login', { state: { from: `/details/${id}` } });
+        return;
+      }
+
+      setWatchListLoading(true);
+      
+      // If it's already on the watchList, remove it. Otherwise, add it.
+      const endpoint = watchList 
+        ? `http://localhost:8081/api/user/watchList/remove/${id}`
+        : `http://localhost:8081/api/user/watchList/add`;
+      
+      const method = watchList ? 'DELETE' : 'POST';
+      const body = watchList ? null : JSON.stringify({
+        movieId: id,
+        title: movie.title,
+        posterPath: movie.poster_path,
+        voteAverage: movie.vote_average
+      });
+
+      fetch(endpoint, {
+        method: method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body
+      })
+        .then(response => response.json())
+        .then(data => {
+          setWatchlist(!watchList);
+          setWatchListLoading(false);
+        })
+        .catch(error => {
+          console.error('Error toggling watch list:', error);
+          setWatchListLoading(false);
+        });
+    };
   
     // Fetch movie details, trailers, and streaming services when the id changes
     useEffect(() => {
@@ -125,6 +190,7 @@ function MovieDetails() {
       getStreamingService();
       getTrailer();
       checkFavoriteStatus();
+      checkWatchListStatus();
     }, [id, currentUser]);
 
     // Handle click on a movie card
@@ -191,6 +257,24 @@ function MovieDetails() {
                         {isFavorite ? '♥' : '♡'}
                       </span>
                       <span>{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
+                    </>
+                  )}
+                </button>
+
+                {/*watchlist button*/}
+                <button
+                  className={`${Style.watchListButton} ${watchList ? Style.added : ''}`}
+                  onClick={toggleWatchList}
+                  disabled={watchListLoading}
+                >
+                  {watchListLoading ? (
+                    <span className={Style.watchListLoader}></span>
+                  ):(
+                    <>
+                    <span>
+                      {watchList ? '-' : '+'}
+                    </span>
+                    <span>{watchList ? 'remove from Watch List' : 'Add to watch list'}</span>
                     </>
                   )}
                 </button>

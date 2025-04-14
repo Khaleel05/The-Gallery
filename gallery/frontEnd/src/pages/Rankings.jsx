@@ -1,3 +1,4 @@
+//this is being repurpose to create a watch list page into the watch list page. 
 import React, {useState} from 'react'
 import Header from '../sections/Header'
 

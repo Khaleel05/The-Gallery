@@ -21,7 +21,7 @@ const NavListData = [
     {
         _id: 4,
         link: "#Rankings",
-        name: `Rankings`,
+        name: `Watch List`,
         active: false,
     }
 ];

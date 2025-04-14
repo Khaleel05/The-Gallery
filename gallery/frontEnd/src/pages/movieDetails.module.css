@@ -156,6 +156,49 @@
     animation: spin 1s ease-in-out infinite;
     margin-right: 0.5rem;
   }
+
+  /* watch list button */
+  .watchListButton{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: 2px solid #e5004f;
+    border-radius: 20px;
+    color: #ffffff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  .watchListButton:hover{
+    background-color: rgba(229, 0, 79, 0.1);
+  }
+
+  .watchListButton:active{
+    transform: scale(0.97);
+  }
+
+  .watchListButton.added {
+    background-color: #e5004f;
+    color: white;
+  }
+
+  .watchListLoader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 0.5rem;
+  }
+
+
+
   
   /* Movie content section */
   .movieContent {

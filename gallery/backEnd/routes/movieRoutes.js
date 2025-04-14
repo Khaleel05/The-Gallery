@@ -251,6 +251,155 @@ router.get('/user/favorites', async (req, res) => {
   }
 });
 
+//user watch list route 
+router.post('/user/watchList/add', async (req, res) => {
+  try {
 
+    // Check if user is authenticated and log the session
+    console.log("Session data:", req.session);
+    console.log('id: ', req.session.user.email)
+    // Check if user is authenticated
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    const userId = req.session.user.email;
+    const { movieId, title, posterPath, voteAverage } = req.body;
+
+    // Validate required fields
+    if (!movieId || !title) {
+      return res.status(400).json({ error: 'Movie ID and title are required' });
+    }
+
+    // Check if movie already exists in favorites
+    const existingWatchList = await db.query(
+      'SELECT * FROM user_watch_list WHERE user_id = ? AND movie_id = ?',
+      [userId, movieId]
+    );
+
+    console.log(userId)
+    console.log('(finding existing movies)Available properties:', Object.keys(existingWatchList));
+    console.log('(finding existing movies)fields:', existingWatchList.values);
+
+    if (existingWatchList._results.length > 0) {
+      console.log('alredy in watch list')
+      return res.status(200).json({ message: 'Movie already in favorites' });
+    }
+
+    // Add to favorites
+    await db.query(
+      'INSERT INTO user_watch_list (user_id, movie_id, title, poster_path, vote_average, added_at) VALUES (?, ?, ?, ?, ?, NOW())',
+      [userId, movieId, title, posterPath, voteAverage]
+    );
+
+    console.log('added movie to watch List table')
+    res.status(201).json({ message: 'Movie added to watch list ' });
+  } catch (error) {
+    console.error('Error adding to watch list:', error);
+    res.status(500).json({ error: 'Failed to add movie to watch list' });
+  }
+});
+
+//Remove from watch list
+router.delete('/user/watchList/remove/:movieId', (req, res) => {
+  // Check if user is authenticated
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  const userId = req.session.user.email;
+  const { movieId } = req.params;
+
+  console.log(`Removing movie ${movieId} from watch list for user ${userId}`);
+
+  // Execute the DELETE query with a callback
+  db.query(
+    'DELETE FROM user_watch_list WHERE user_id = ? AND movie_id = ?',
+    [userId, movieId],
+    (error, results) => {
+      if (error) {
+        console.error('Database error:', error);
+        return res.status(500).json({ error: 'Database query failed' });
+      }
+
+      console.log('Query results:', results); // Debugging output
+
+      // Check if any rows were affected
+      if (results.affectedRows > 0) {
+        return res.status(200).json({ message: 'Movie removed from watch list ' });
+      } else {
+        return res.status(404).json({ message: 'Movie not found in watch list ' });
+      }
+    }
+  );
+});
+
+//Check if movie is in the watch list 
+router.get('/user/watchList/check/:movieId', async (req, res) => {
+  try {
+    // Check if user is authenticated
+    if (!req.session.user) {
+      return res.status(401).json({ onWatchList: false });
+    }
+
+    const userId = req.session.user.email;
+    const { movieId } = req.params;
+
+    console.log('Checking watch list movie for user:', userId);
+    console.log('Movie ID:', movieId);
+
+    // Execute the database query using a connection from the pool
+    db.query(
+      'SELECT * FROM user_watch_list WHERE user_id = ? AND movie_id = ?',
+      [userId, movieId],
+      (error, results) => {
+        if (error) {
+          console.error('Database error:', error);
+          return res.status(500).json({ error: 'Database query failed' });
+        }
+
+        console.log('Query results:', results); // Debugging output
+
+        const onWatchList = results.length > 0;
+        res.status(200).json({ onWatchList });
+      }
+    );
+
+  } catch (error) {
+    console.error('Error checking watch list status:', error);
+    res.status(500).json({ error: 'Failed to check watch list status' });
+  }
+});
+
+//get all users watch list
+router.get('/user/watchList', async (req, res) => {
+  try {
+    // Check if user is authenticated
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    const userId = req.session.user.email;
+    console.log(userId);
+
+    // Get all favorites for the user
+    db.query(
+      'SELECT * FROM user_favorites WHERE user_id = ? ORDER BY added_at DESC',
+      [userId],
+      (error, results) => {
+        if (error) {
+          console.error('Error fetching favorites:', error);
+          return res.status(500).json({ error: 'Failed to fetch favorites' });
+        }
+
+        console.log('Favorites retrieved:', results); // Added logging for debugging
+        res.status(200).json(results);
+      }
+    );
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    res.status(500).json({ error: 'Failed to fetch favorites' });
+  }
+});
 
 module.exports = router;
