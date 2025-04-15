@@ -11,6 +11,7 @@ import Rankings from './pages/Rankings';
 import Profile from './pages/Profile';
 import GenreSelection from './pages/GenreSelection';
 import UserMovieSelection from './pages/UserMovieSelection';
+import WhatsOnTonight from './pages/WhatsOnTonight';
 
 
 console.log(process.env.REACT_APP_TMDB_API_KEY);
@@ -67,6 +68,12 @@ function App() {
               exact path = "/trend"
               element={
                 <Favourites/>
+              }
+              />
+              <Route
+              exact path = "/wot"
+              element={
+                <WhatsOnTonight/>
               }
               />
               <Route

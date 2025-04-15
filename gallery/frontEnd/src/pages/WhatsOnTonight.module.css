@@ -1,0 +1,264 @@
+.container {
+    padding-top: 5rem;
+    min-height: 100vh;
+    background-color: #0d1117;
+    color: #e6e6e6;
+  }
+  
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    color: #9ca3af;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .filtersContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .filterGroup {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+  
+  .filterLabel {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #d1d5db;
+  }
+  
+  .select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background-color: #1a1d24;
+    color: #e6e6e6;
+    border: 1px solid #30363d;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  .select:focus {
+    border-color: #3b82f6;
+  }
+  
+  .yearInputs {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .yearInput {
+    width: 5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background-color: #1a1d24;
+    color: #e6e6e6;
+    border: 1px solid #30363d;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  .yearInput:focus {
+    border-color: #3b82f6;
+  }
+  
+  .findButton {
+    background-color: #e5004f;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-bottom: 3rem;
+  }
+  
+  .findButton:hover {
+    background-color: #d0003d;
+  }
+  
+  .findButton:active {
+    transform: scale(0.98);
+  }
+  
+  .findButton:disabled {
+    background-color: #71294a;
+    cursor: not-allowed;
+  }
+  
+  .cardContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    perspective: 1500px;
+    height: 500px;
+  }
+  
+  .card {
+    width: 320px;
+    height: 500px;
+    position: relative;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    transition: transform 0.6s ease;
+  }
+  
+  .rotating {
+    animation: rotateCard 1.5s ease-in-out;
+  }
+  
+  @keyframes rotateCard {
+    0% { transform: rotateY(0deg) translateZ(0); }
+    50% { transform: rotateY(180deg) translateZ(50px); }
+    100% { transform: rotateY(360deg) translateZ(0); }
+  }
+  
+  .flipped {
+    transform: rotateY(180deg);
+  }
+  
+  .cardFront, .cardBack, .emptyCard {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .cardFront {
+    background-color: #1a1d24;
+  }
+  
+  .cardBack {
+    background-color: #1a1d24;
+    transform: rotateY(180deg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .movieTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+  
+  .tagline {
+    font-style: italic;
+    color: #9ca3af;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .movieMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #9ca3af;
+  }
+  
+  .star {
+    color: #fbbf24;
+  }
+  
+  .overview {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+  }
+  
+  .genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .genre {
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(59, 130, 246, 0.2);
+    border-radius: 16px;
+    font-size: 0.75rem;
+  }
+  
+  .viewDetails {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #3b82f6;
+    font-weight: 500;
+  }
+  
+  .emptyCard {
+    background-color: #1a1d24;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .emptyCardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .movieIcon {
+    font-size: 3rem;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .filtersContainer {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .filterGroup {
+      width: 100%;
+      max-width: 300px;
+    }
+  }

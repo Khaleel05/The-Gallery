@@ -22,12 +22,51 @@ router.get('/movies', async (req, res) => {
     try {
       //console.log('Api recieved');
       const genreId = req.query.genreId;
-        let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=`;
-        if (genreId) {
-          url += `&with_genres=${genreId}`;
-        }
-        const response = await axios.get(url);
-        res.json(response.data.results); // Send the movie data back to the frontend
+      const isRandom = req.query.random === 'true';
+      const yearGte = req.query.year_gte;
+      const yearLte = req.query.year_lte;
+      const withWatchProviders = req.query.with_watch_providers;
+      
+      // Base URL
+      let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`;
+      
+      // Add query parameters
+      if (genreId) {
+        url += `&with_genres=${genreId}`;
+      }
+      
+      if (yearGte) {
+        url += `&primary_release_date.gte=${yearGte}-01-01`;
+      }
+      
+      if (yearLte) {
+        url += `&primary_release_date.lte=${yearLte}-12-31`;
+      }
+      
+      if (withWatchProviders) {
+        url += `&with_watch_providers=${withWatchProviders}`;
+        url += `&watch_region=US`; // Use US as default region
+      }
+      
+      // For random movies, increase page count to get more varied results
+      if (isRandom) {
+        // Get a random page between 1 and 5
+        const randomPage = Math.floor(Math.random() * 5) + 1;
+        url += `&page=${randomPage}`;
+        
+        // Sort by popularity, but with some randomness
+        const sortOptions = [
+          'popularity.desc', 
+          'vote_average.desc', 
+          'primary_release_date.desc',
+          'revenue.desc'
+        ];
+        const randomSort = sortOptions[Math.floor(Math.random() * sortOptions.length)];
+        url += `&sort_by=${randomSort}`;
+      }
+      
+      const response = await axios.get(url);
+      res.json(response.data.results); // Send the movie data back to the frontend
     } catch (error) {
         console.error('Error fetching movies from TMDB:', error);
         res.status(500).json({ error: 'Failed to fetch movies' });
@@ -333,7 +372,6 @@ router.delete('/user/watchList/remove/:movieId', (req, res) => {
     }
   );
 });
-
 //Check if movie is in the watch list 
 router.get('/user/watchList/check/:movieId', async (req, res) => {
   try {
