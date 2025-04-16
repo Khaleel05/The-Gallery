@@ -157,39 +157,6 @@ function LoginForm() {
         }
     }
 
-    /*
-    async function handleSubmit(e){
-        e.preventDefault();
-        
-        try{
-            //Sends POST request with email and password
-            const response = await axios.post("http://localhost:8081/user",{
-                email, password
-            });
-
-            //handle response data
-            console.log(response.data)
-            if(response.data==="exists"){
-                console.log('login successfull');
-                history('/home',)
-            }
-            else if(response.data==="notexists"){
-                alert("User not found!")
-            }
-            else{
-                //Handle unepected response
-                console.error("unexpected: ", response.data);
-                alert("An unexpected error occurred!")
-            }   
-        }
-        catch{
-            console.log(e)
-            alert("wrong details")
-        }
-    }
-    */
-    
-
   return (
     <div className="wrapper" style={loginFormStyle.wrapper}>
         <form onSubmit ={handleSubmit}>

@@ -55,6 +55,7 @@ function Home() {
   }, []);
 
   useEffect(()=>{console.log(genreMovies)},[]);
+
   const handleClick = (id) => {
     navigate(`/details/${id}`);
     console.log(id);

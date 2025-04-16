@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaUser, FaEnvelope, FaCalendarAlt, FaVenusMars } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import axios from "axios";
-import './signupForm.css';
+
 
 const loginFormStyle = {
     wrapper: {
@@ -189,7 +189,7 @@ function SignUpForm() {
             } else if (res.data.status === "notexists") {
                 setSuccess(true);
                 alert("User created successfully!");
-                window.location.href = "/genreSelection";//change this to the genre page. 
+                window.location.href = "#/genreSelection";//change this to the genre page. 
             } else {
                 setErrMsg("Registration failed. Try again.");
             }

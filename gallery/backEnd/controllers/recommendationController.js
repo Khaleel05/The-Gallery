@@ -35,18 +35,6 @@ const getMovieDetails = async (movieId) => {
     }
 };
 
-// const getMovieCast = async (movieId) => {
-//     try {
-//         const response = await axios.get(
-//             `https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=${apiKey}`
-//         );
-//         return response.data;
-//     } catch (error) {
-//         console.error(`Error fetching cast details for movie ${movieId}:`, error);
-//         return null;
-//     }
-// };
-
 //get content based recommendatiosn for a user. 
 exports.getContentBasedRecommendations = async (req, res) => {
     try{

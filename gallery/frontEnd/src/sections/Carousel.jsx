@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
-import Movies from '../API/movies'
+import React, { useRef } from 'react'
 import Style from './carousel.module.css'
 
 //the component containing the movies and lining them up. 
