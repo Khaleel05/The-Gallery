@@ -5,19 +5,19 @@ import { useNavigate } from 'react-router-dom';
 
 function Banner() {
   const navigate = useNavigate();
-  // State to track the current image index
+  //state to track the current image index
   const [currentIndex, setCurrentIndex] = useState(0);
-  // State to store movie data including images, titles, and overviews
+  //state to store movie data including images, titles, and overviews
   const [movies, setMovies] = useState([]);
-  // State for fade effect
+  //state for fade effect
   const [fadeIn, setFadeIn] = useState(true);
   
-  // Function to handle receiving movie data from Backdrop
+  //function to handle receiving movie data from Backdrop
   const handleMovieData = (movieData) => {
     setMovies(movieData);
   };
 
-  // Auto-transition effect
+  //auto-transition effect
   useEffect(() => {
     if (movies.length === 0) return;
     
@@ -25,7 +25,7 @@ function Banner() {
       // Start fade out
       setFadeIn(false);
       
-      // After fade out, change image and start fade in
+      //after fade out, change image and start fade in
       const fadeOutTimer = setTimeout(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % movies.length);
         setFadeIn(true);
@@ -56,7 +56,7 @@ function Banner() {
   return (
     <div 
       className={Style.bannerContainer} 
-      onClick={() => handleClick(currentMovie.id)} // Add click handler to the entire banner
+      onClick={() => handleClick(currentMovie.id)} 
     >
       <div className={`${Style.bannerImage} ${fadeIn ? Style.fadeIn : Style.fadeOut}`}>
         {currentMovie.backdrop_path && (

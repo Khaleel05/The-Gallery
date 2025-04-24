@@ -18,6 +18,8 @@ function Favourites() {
   const [error, setError] = useState(null);
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [genreMap, setGenreMap] = useState([]);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(true);
   
 
   useEffect(() => {
@@ -56,6 +58,43 @@ function Favourites() {
       };
 
       fetchRecommendations();
+  }, [currentUser]);
+
+  // Fetch user's favorite movies
+  useEffect(() => {
+    const fetchFavoriteMovies = async () => {
+      if (!currentUser) return;
+      
+      setLoadingFavorites(true);
+      try {
+        const response = await axios.get('http://localhost:8081/api/user/favorites', {
+          withCredentials: true
+        });
+
+        if (response.data && Array.isArray(response.data)) {
+          // Process favorites to match expected movie format
+          const processedFavorites = response.data.map(fav => ({
+            id: parseInt(fav.movie_id),
+            title: fav.title,
+            poster_path: fav.poster_path,
+            vote_average: parseFloat(fav.vote_average) || 0
+          }));
+          
+          setFavoriteMovies(processedFavorites);
+          console.log('Fetched favorite movies:', processedFavorites);
+        } else {
+          console.log('No favorites found or invalid response format');
+          setFavoriteMovies([]);
+        }
+      } catch (error) {
+        console.error('Error fetching favorite movies:', error);
+        setFavoriteMovies([]);
+      } finally {
+        setLoadingFavorites(false);
+      }
+    };
+
+    fetchFavoriteMovies();
   }, [currentUser]);
 
   // Fetch user's selected genres and movies
@@ -232,6 +271,35 @@ function Favourites() {
                       </div>
                   </div>
               )}
+
+              {/* Favorite Movies Section */}
+              <div className={Style.recommendationsContainer}>
+                  <h2 className={Style.title}>Your Favorites</h2>
+                  {loadingFavorites ? (
+                      <div className={Style.loadingContainer}>
+                          <div className={Style.loader}></div>
+                          <p>Loading your favorite movies...</p>
+                      </div>
+                  ) : favoriteMovies.length === 0 ? (
+                      <div className={Style.emptyContainer}>
+                          <p>You haven't added any movies to your favorites yet.</p>
+                          <button 
+                              className={Style.exploreButton}
+                              onClick={() => navigate('/movies')}
+                          >
+                              Explore Movies
+                          </button>
+                      </div>
+                  ) : (
+                      <Carousel 
+                          genre="Favorite Movies" 
+                          genreId="favorites"
+                          movies={favoriteMovies}
+                          handleClick={handleClick}
+                      />
+                  )}
+              </div>
+              
               {/* Genre Based Recommendation */ }
               <div className={Style.genreRecommendationsContainer}>
                 {userGenres.length === 0 ? (
