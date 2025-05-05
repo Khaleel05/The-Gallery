@@ -25,17 +25,6 @@ const Carousel = ({genre, movies, handleClick}) => {
       <h2 style={{color: 'white', fontFamily: 'sans-serif', marginLeft: '1.2em'}}>{genre}</h2>
       <div  className={Style.carousel} ref={carouselRef}>
         {/* Vertically centered navigation icons */}
-      <ion-icon 
-        className={`${Style.carouselIcon} ${Style.leftIcon}`}
-        name="arrow-back-circle-outline" 
-        onClick={scrollLeft}
-      ></ion-icon>
-      
-      <ion-icon 
-        className={`${Style.carouselIcon} ${Style.rightIcon}`}
-        name="arrow-forward-circle-outline" 
-        onClick={scrollRight}
-      ></ion-icon>
         {movies && movies.length > 0 ? (
           movies.map((movie) => (
             <div key={movie.id} className={Style.movieCard}>
